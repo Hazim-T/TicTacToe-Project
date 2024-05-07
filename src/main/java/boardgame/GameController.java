@@ -36,11 +36,11 @@ public class GameController {
         piece.fillProperty().bind(
                 new ObjectBinding<Paint>() {
                     {
-                        super.bind(model.squareProperty(i, j));
+                        super.bind(model.rockProperty(i, j));
                     }
                     @Override
                     protected Paint computeValue() {
-                        return switch (model.squareProperty(i, j).get()) {
+                        return switch (model.rockProperty(i, j).get()) {
                             case NONE -> Color.TRANSPARENT;
                             case RED -> Color.RED;
                             case YELLOW -> Color.YELLOW;
