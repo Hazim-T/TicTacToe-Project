@@ -43,20 +43,25 @@ public class GameModel implements BasicState<Move> {
             System.out.println("Out of the board!");
             return false;
         }
+        if (isGameOver()) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public void makeMove(Move move) {
-        board[move.getRow()][move.getColumn()].set(
-                switch (board[move.getRow()][move.getColumn()].get()) {
-                    case NONE -> Square.RED;
-                    case RED -> Square.YELLOW;
-                    case YELLOW, GREEN -> Square.GREEN;
-                }
-        );
-        if (!isGameOver()) {
-            currentPlayer = getNextPlayer();
+        if (isLegalMove(move)) {
+            board[move.getRow()][move.getColumn()].set(
+                    switch (board[move.getRow()][move.getColumn()].get()) {
+                        case NONE -> Square.RED;
+                        case RED -> Square.YELLOW;
+                        case YELLOW, GREEN -> Square.GREEN;
+                    }
+            );
+            if (!isGameOver()) {
+                currentPlayer = getNextPlayer();
+            }
         }
     }
 
