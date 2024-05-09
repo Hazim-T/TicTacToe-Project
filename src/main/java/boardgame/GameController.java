@@ -2,6 +2,7 @@ package boardgame;
 
 import boardgame.model.GameModel;
 import boardgame.model.Move;
+import game.console.BasicGame;
 import javafx.beans.binding.ObjectBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -12,6 +13,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import org.tinylog.Logger;
+
+import java.util.Scanner;
+import java.util.function.Function;
 
 
 public class GameController {
@@ -61,11 +65,11 @@ public class GameController {
         var row = GridPane.getRowIndex(square);
         var col = GridPane.getColumnIndex(square);
         Logger.info(String.format("Click on square (%d,%d)", row, col));
-        Logger.info("Click was made by " + model.getCurrentPlayer());
+        Logger.info("Click was made by " + model.getNextPlayer());
         var nextMove = new Move(row, col);
         model.makeMove(nextMove);
         if (model.isGameOver()){
-            Logger.info("Game Over! " + model.getCurrentPlayer() + " wins!");
+            Logger.info("Game Over! " + model.getNextPlayer() + " wins!");
             handleGameOver();
         }
     }
@@ -74,7 +78,7 @@ public class GameController {
     private void handleGameOver() {
         var alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over!");
-        alert.setHeaderText(model.getCurrentPlayer() + " wins!");
+        alert.setHeaderText(model.getNextPlayer() + " wins!");
         alert.setContentText("Better luck next time!");
         alert.show();
     }

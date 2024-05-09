@@ -29,11 +29,7 @@ public class GameModel implements BasicState<Move> {
         }
         Logger.info("Game board initialized");
         currentPlayer = Player.PLAYER_1;
-        Logger.info("Current player initialized to " + getCurrentPlayer());
-    }
-
-    public Player getCurrentPlayer() {
-        return currentPlayer;
+        Logger.info("Current player initialized to " + getNextPlayer());
     }
 
     public Rock getRock(int i, int j) {
@@ -86,7 +82,7 @@ public class GameModel implements BasicState<Move> {
                     }
             );
             if (!isGameOver()) {
-                currentPlayer = getNextPlayer();
+                changePlayer();
             }
         }
     }
@@ -98,7 +94,11 @@ public class GameModel implements BasicState<Move> {
      */
     @Override
     public Player getNextPlayer() {
-        return switch (currentPlayer) {
+        return currentPlayer;
+    }
+
+    private void changePlayer() {
+        currentPlayer =  switch (getNextPlayer()) {
             case PLAYER_1 -> Player.PLAYER_2;
             case PLAYER_2 -> Player.PLAYER_1;
         };
