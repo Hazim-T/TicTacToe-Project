@@ -82,4 +82,23 @@ public class GameController {
         alert.setContentText("Better luck next time!");
         alert.show();
     }
+
+
+    public static void main(String[] args) {
+        var model = new GameModel();
+        var parser = new Function<String, Move>() {
+            @Override
+            public Move apply(String s) {
+                s = s.trim();
+                if (!s.matches("\\d+\\s+\\d+")) {
+                    throw new IllegalArgumentException();
+                }
+                var scanner = new Scanner(s);
+                return new Move(scanner.nextInt(), scanner.nextInt());
+            }
+        };
+        // Creates a BasicGame instance to conduct a two-player game of the basic type on the console.
+        BasicGame<Move> game = new BasicGame<Move>(model, parser);
+        game.start();
+    }
 }
