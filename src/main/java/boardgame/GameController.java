@@ -11,6 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import org.tinylog.Logger;
 
 
 public class GameController {
@@ -59,10 +60,12 @@ public class GameController {
         var square = (StackPane) event.getSource();
         var row = GridPane.getRowIndex(square);
         var col = GridPane.getColumnIndex(square);
-        System.out.printf("Click on square (%d,%d)%n", row, col);
+        Logger.info(String.format("Click on square (%d,%d)", row, col));
+        Logger.info("Click was made by " + model.getCurrentPlayer());
         var nextMove = new Move(row, col);
         model.makeMove(nextMove);
         if (model.isGameOver()){
+            Logger.info("Game Over! " + model.getCurrentPlayer() + " wins!");
             handleGameOver();
         }
     }

@@ -3,6 +3,7 @@ package boardgame.model;
 import game.BasicState;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import org.tinylog.Logger;
 
 
 public class GameModel implements BasicState<Move> {
@@ -26,7 +27,9 @@ public class GameModel implements BasicState<Move> {
                 board[i][j] = new ReadOnlyObjectWrapper<Rock>(Rock.NONE);
             }
         }
+        Logger.info("Game board initialized");
         currentPlayer = Player.PLAYER_1;
+        Logger.info("Current player initialized to " + getCurrentPlayer());
     }
 
     public Player getCurrentPlayer() {
@@ -52,12 +55,13 @@ public class GameModel implements BasicState<Move> {
      */
     @Override
     public boolean isLegalMove(Move move) {
+        // A green ROCK can't be replaced
         if (board[move.getRow()][move.getColumn()].get() == Rock.GREEN) {
-            System.out.println("Can't click there!");
+            Logger.warn("Green rock clicked, Illegal move!");
             return false;
         }
         if (move.getRow() < 0 || move.getRow() >= BOARD_SIZE || move.getColumn() < 0 || move.getColumn() >= BOARD_SIZE) {
-            System.out.println("Out of the board!");
+            Logger.error("Click is outside of the board index!");
             return false;
         }
         if (isGameOver()) {
@@ -140,8 +144,10 @@ public class GameModel implements BasicState<Move> {
     public Status getStatus() {
         if (!isGameOver()) {
             if (currentPlayer == Player.PLAYER_1) {
+                Logger.info("Player 1 wins!");
                 return Status.PLAYER_1_WINS;
             } else if (currentPlayer == Player.PLAYER_2) {
+                Logger.info("Player 2 wins!");
                 return Status.PLAYER_2_WINS;
             }
         }
