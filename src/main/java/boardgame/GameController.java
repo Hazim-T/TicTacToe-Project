@@ -2,7 +2,6 @@ package boardgame;
 
 import boardgame.model.GameModel;
 import boardgame.model.Move;
-import game.console.BasicGame;
 import javafx.beans.binding.ObjectBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -13,9 +12,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import org.tinylog.Logger;
-
-import java.util.Scanner;
-import java.util.function.Function;
 
 
 public class GameController {
@@ -81,24 +77,5 @@ public class GameController {
         alert.setHeaderText(model.getNextPlayer() + " wins!");
         alert.setContentText("Better luck next time!");
         alert.show();
-    }
-
-
-    public static void main(String[] args) {
-        var model = new GameModel();
-        var parser = new Function<String, Move>() {
-            @Override
-            public Move apply(String s) {
-                s = s.trim();
-                if (!s.matches("\\d+\\s+\\d+")) {
-                    throw new IllegalArgumentException();
-                }
-                var scanner = new Scanner(s);
-                return new Move(scanner.nextInt(), scanner.nextInt());
-            }
-        };
-        // Creates a BasicGame instance to conduct a two-player game of the basic type on the console.
-        BasicGame<Move> game = new BasicGame<Move>(model, parser);
-        game.start();
     }
 }

@@ -32,10 +32,6 @@ public class GameModel implements BasicState<Move> {
         Logger.info("Current player initialized to " + getNextPlayer());
     }
 
-    public Rock getRock(int i, int j) {
-        return board[i][j].get();
-    }
-
     /**
      * @param i the row index
      * @param j the column index
@@ -51,19 +47,18 @@ public class GameModel implements BasicState<Move> {
      */
     @Override
     public boolean isLegalMove(Move move) {
-        // A green ROCK can't be replaced
-        if (board[move.getRow()][move.getColumn()].get() == Rock.GREEN) {
-            Logger.warn("Green rock clicked, Illegal move!");
-            return false;
-        }
-        if (move.getRow() < 0 || move.getRow() >= BOARD_SIZE || move.getColumn() < 0 || move.getColumn() >= BOARD_SIZE) {
-            Logger.error("Click is outside of the board index!");
-            return false;
-        }
-        if (isGameOver()) {
-            return false;
-        }
-        return true;
+        return isOnBoard(move)
+                && !isGreenRock(move)
+                && !isGameOver();
+    }
+
+    private boolean isGreenRock(Move move) {
+        return board[move.row()][move.col()].get() == Rock.GREEN;
+    }
+
+    private boolean isOnBoard(Move move) {
+        return 0 <= move.row() && move.row() < BOARD_SIZE && 0 <= move.col() && move.col() < BOARD_SIZE;
+
     }
 
     /**
@@ -74,43 +69,32 @@ public class GameModel implements BasicState<Move> {
     @Override
     public void makeMove(Move move) {
         if (isLegalMove(move)) {
-            board[move.getRow()][move.getColumn()].set(
-                    switch (board[move.getRow()][move.getColumn()].get()) {
+            board[move.row()][move.col()].set(
+                    switch (board[move.row()][move.col()].get()) {
                         case NONE -> Rock.RED;
                         case RED -> Rock.YELLOW;
                         case YELLOW, GREEN -> Rock.GREEN;
                     }
             );
             if (!isGameOver()) {
-                changePlayer();
+                currentPlayer = currentPlayer.opponent();
             }
         }
     }
 
     /**
-     * Returns the next player in the game based on the current player.
-     *
-     * @return the next player
+     * @return the player to make the next move
      */
     @Override
     public Player getNextPlayer() {
         return currentPlayer;
     }
 
-    private void changePlayer() {
-        currentPlayer =  switch (getNextPlayer()) {
-            case PLAYER_1 -> Player.PLAYER_2;
-            case PLAYER_2 -> Player.PLAYER_1;
-        };
-    }
-
     /**
-     * Checks if the game is over based off the game rules.
-     *
-     * @return {@code true} if the game is over, {@code false} otherwise
+     * {@return whether the game is over}
      */
     @Override
-    public boolean isGameOver() {
+    public boolean isGameOver() { //TODO: make this into methods
         // Check rows
         for (int i = 0; i < BOARD_SIZE; i++) {
             if (board[i][0].get() != Rock.NONE && board[i][0].get() == board[i][1].get() && board[i][1].get() == board[i][2].get()) {
@@ -136,22 +120,14 @@ public class GameModel implements BasicState<Move> {
     }
 
     /**
-     * Checks the current status of the game
-     *
-     * @return the game status as a {@link Status} enum element
+     * {@return the status of the game}
      */
     @Override
     public Status getStatus() {
         if (!isGameOver()) {
-            if (currentPlayer == Player.PLAYER_1) {
-                Logger.info("Player 1 wins!");
-                return Status.PLAYER_1_WINS;
-            } else if (currentPlayer == Player.PLAYER_2) {
-                Logger.info("Player 2 wins!");
-                return Status.PLAYER_2_WINS;
-            }
+            return Status.IN_PROGRESS;
         }
-        return Status.IN_PROGRESS;
+        return currentPlayer == Player.PLAYER_2 ? Status.PLAYER_1_WINS : Status.PLAYER_2_WINS;
     }
 
     @Override
