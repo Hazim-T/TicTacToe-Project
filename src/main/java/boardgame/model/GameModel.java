@@ -1,6 +1,8 @@
 package boardgame.model;
 
 import game.BasicState;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import org.tinylog.Logger;
@@ -9,6 +11,8 @@ import org.tinylog.Logger;
 public class GameModel implements BasicState<Move> {
 
     private Player currentPlayer;
+
+    private final ReadOnlyIntegerWrapper numberOfTurns;
 
     /**
      * The size of the board.
@@ -28,6 +32,7 @@ public class GameModel implements BasicState<Move> {
             }
         }
         Logger.info("Game board initialized");
+        numberOfTurns = new ReadOnlyIntegerWrapper(0);
         currentPlayer = Player.PLAYER_1;
         Logger.info("Current player initialized to " + getNextPlayer());
     }
@@ -39,6 +44,14 @@ public class GameModel implements BasicState<Move> {
      */
     public ReadOnlyObjectProperty<Rock> rockProperty(int i, int j) {
         return board[i][j].getReadOnlyProperty();
+    }
+
+    public int getNumberOfCoins() {
+        return numberOfTurns.get();
+    }
+
+    public ReadOnlyIntegerProperty numberOfCoinsProperty() {
+        return numberOfTurns.getReadOnlyProperty();
     }
 
     /**
@@ -76,6 +89,8 @@ public class GameModel implements BasicState<Move> {
                         case YELLOW, GREEN -> Rock.GREEN;
                     }
             );
+            numberOfTurns.set(numberOfTurns.get() + 1);
+            Logger.info("number of turns: " + getNumberOfCoins());
             if (!isGameOver()) {
                 currentPlayer = currentPlayer.opponent();
             }
