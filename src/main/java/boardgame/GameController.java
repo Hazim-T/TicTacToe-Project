@@ -3,9 +3,11 @@ package boardgame;
 import boardgame.model.GameModel;
 import boardgame.model.Move;
 import boardgame.model.Rock;
+import javafx.application.Platform;
 import javafx.beans.binding.ObjectBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -16,9 +18,12 @@ import util.javafx.EnumImageStorage;
 import util.javafx.ImageStorage;
 
 
-public class GameController { // TODO: add champion name
+public class GameController {
     @FXML
     private GridPane board;
+
+    @FXML
+    private TextField numberOfTurnsField;
 
     private GameModel model = new GameModel();
 
@@ -32,6 +37,7 @@ public class GameController { // TODO: add champion name
                 board.add(square, j, i);
             }
         }
+        numberOfTurnsField.textProperty().bind(model.numberOfCoinsProperty().asString());
     }
 
     private StackPane createSquare(int i, int j) {
@@ -61,8 +67,7 @@ public class GameController { // TODO: add champion name
         var square = (StackPane) event.getSource();
         var row = GridPane.getRowIndex(square);
         var col = GridPane.getColumnIndex(square);
-        Logger.info(String.format("Click on square (%d,%d)", row, col));
-        Logger.info("Click was made by " + model.getNextPlayer());
+        Logger.debug(String.format("Click on square (%d,%d) by %s", row, col, model.getNextPlayer()));
         var nextMove = new Move(row, col);
         model.makeMove(nextMove);
         if (model.isGameOver()){
@@ -73,10 +78,16 @@ public class GameController { // TODO: add champion name
 
     @FXML
     private void handleGameOver() {
+        Logger.debug("Game is Won!");
+        Platform.runLater(this::showGameOverAlertAndExit);
+    }
+
+    private void showGameOverAlertAndExit() {
         var alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over!");
         alert.setHeaderText(model.getNextPlayer() + " wins!");
         alert.setContentText("Better luck next time!");
-        alert.show();
+        alert.showAndWait();
+        Platform.exit();
     }
 }
