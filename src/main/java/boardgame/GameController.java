@@ -2,23 +2,27 @@ package boardgame;
 
 import boardgame.model.GameModel;
 import boardgame.model.Move;
+import boardgame.model.Rock;
 import javafx.beans.binding.ObjectBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
+import javafx.scene.image.Image;
 import org.tinylog.Logger;
+import util.javafx.EnumImageStorage;
+import util.javafx.ImageStorage;
 
 
-public class GameController {
+public class GameController { // TODO: add champion name
     @FXML
     private GridPane board;
 
     private GameModel model = new GameModel();
+
+    private ImageStorage<Rock> imageStorage = new EnumImageStorage<>(Rock.class);
 
     @FXML
     private void initialize() {
@@ -33,24 +37,21 @@ public class GameController {
     private StackPane createSquare(int i, int j) {
         var square = new StackPane();
         square.getStyleClass().add("square");
-        var piece = new Circle(70);
-        piece.fillProperty().bind(
-                new ObjectBinding<Paint>() {
+        var imageView = new ImageView();
+        imageView.setFitWidth(100);
+        imageView.setFitHeight(60);
+        imageView.imageProperty().bind(
+                new ObjectBinding<Image>() {
                     {
                         super.bind(model.rockProperty(i, j));
                     }
                     @Override
-                    protected Paint computeValue() {
-                        return switch (model.rockProperty(i, j).get()) {
-                            case NONE -> Color.TRANSPARENT;
-                            case RED -> Color.RED;
-                            case YELLOW -> Color.YELLOW;
-                            case GREEN -> Color.GREEN;
-                        };
+                    protected Image computeValue() {
+                        return imageStorage.get(model.rockProperty(i, j).get()).orElse(null);
                     }
                 }
         );
-        square.getChildren().add(piece);
+        square.getChildren().add(imageView);
         square.setOnMouseClicked(this::handleMouseClick);
         return square;
     }
