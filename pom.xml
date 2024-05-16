@@ -25,7 +25,7 @@
         <maven.checkstyle.version>3.3.1</maven.checkstyle.version>
         <maven.surefire.version>3.2.5</maven.surefire.version>
         <tinylog.version>2.7.0</tinylog.version>
-        <exec.mainClass>boardgame.Main</exec.mainClass>
+        <exec.mainClass>boardgame.ui.Main</exec.mainClass>
     </properties>
     <dependencies>
         <dependency>
