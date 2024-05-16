@@ -3,6 +3,7 @@ package boardgame.ui;
 import boardgame.model.GameModel;
 import boardgame.model.Move;
 import boardgame.model.Rock;
+import game.State;
 import javafx.application.Platform;
 import javafx.beans.binding.ObjectBinding;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import org.tinylog.Logger;
 import util.javafx.EnumImageStorage;
 import util.javafx.ImageStorage;
@@ -25,19 +27,27 @@ public class GameController {
     @FXML
     private TextField numberOfTurnsField;
 
+    private Players players;
+
     private GameModel model = new GameModel();
 
     private ImageStorage<Rock> imageStorage = new EnumImageStorage<>(Rock.class);
 
     @FXML
     private void initialize() {
-        for (var i = 0; i < board.getRowCount(); i++) {
-            for (var j = 0; j < board.getColumnCount(); j++) {
-                var square = createSquare(i, j);
-                board.add(square, j, i);
+        Platform.runLater(() -> {
+            for (var i = 0; i < board.getRowCount(); i++) {
+                for (var j = 0; j < board.getColumnCount(); j++) {
+                    var square = createSquare(i, j);
+                    board.add(square, j, i);
+                }
             }
-        }
-        numberOfTurnsField.textProperty().bind(model.numberOfCoinsProperty().asString());
+            numberOfTurnsField.textProperty().bind(model.numberOfCoinsProperty().asString());
+            Stage stage = (Stage) board.getScene().getWindow();
+            players = (Players) stage.getUserData();
+            Logger.info("Player 1 name passed: {}", players.player1());
+            Logger.info("Player 2 name passed: {}", players.player2());
+        });
     }
 
     private StackPane createSquare(int i, int j) {
@@ -71,7 +81,7 @@ public class GameController {
         var nextMove = new Move(row, col);
         model.makeMove(nextMove);
         if (model.isGameOver()){
-            Logger.info("Game Over! " + model.getNextPlayer() + " wins!");
+            Logger.info("Game Over! " + getPlayerName(model.getNextPlayer()) + " wins!");
             handleGameOver();
         }
     }
@@ -85,9 +95,16 @@ public class GameController {
     private void showGameOverAlertAndExit() {
         var alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over!");
-        alert.setHeaderText(model.getNextPlayer() + " wins!");
+        alert.setHeaderText(getPlayerName(model.getNextPlayer()) + " wins!");
         alert.setContentText("Better luck next time!");
         alert.showAndWait();
         Platform.exit();
+    }
+
+    private String getPlayerName(State.Player player){
+        if (players.player2().isEmpty() || players.player1().isEmpty()) {
+            return player.toString();
+        }
+        return player == State.Player.PLAYER_1 ? players.player1() : players.player2();
     }
 }
