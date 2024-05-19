@@ -4,9 +4,15 @@ import boardgame.model.GameModel;
 import boardgame.model.Move;
 import boardgame.model.Rock;
 import game.State;
+import gameresult.TwoPlayerGameResult;
+import gameresult.manager.TwoPlayerGameResultManager;
+import gameresult.manager.json.JsonTwoPlayerGameResultManager;
 import javafx.application.Platform;
 import javafx.beans.binding.ObjectBinding;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -19,6 +25,11 @@ import org.tinylog.Logger;
 import util.javafx.EnumImageStorage;
 import util.javafx.ImageStorage;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+
 
 public class GameController {
     @FXML
@@ -28,6 +39,8 @@ public class GameController {
     private TextField numberOfTurnsField;
 
     private Players players;
+
+    private ZonedDateTime timeCreated;
 
     private GameModel model = new GameModel();
 
@@ -42,11 +55,12 @@ public class GameController {
                     board.add(square, j, i);
                 }
             }
-            numberOfTurnsField.textProperty().bind(model.numberOfCoinsProperty().asString());
+            numberOfTurnsField.textProperty().bind(model.numberOfTurnsProperty().asString());
             Stage stage = (Stage) board.getScene().getWindow();
             players = (Players) stage.getUserData();
             Logger.info("Player 1 name passed: {}", players.player1());
             Logger.info("Player 2 name passed: {}", players.player2());
+            timeCreated = ZonedDateTime.now();
         });
     }
 
@@ -61,6 +75,7 @@ public class GameController {
                     {
                         super.bind(model.rockProperty(i, j));
                     }
+
                     @Override
                     protected Image computeValue() {
                         return imageStorage.get(model.rockProperty(i, j).get()).orElse(null);
@@ -80,7 +95,7 @@ public class GameController {
         Logger.debug(String.format("Click on square (%d,%d) by %s", row, col, model.getNextPlayer()));
         var nextMove = new Move(row, col);
         model.makeMove(nextMove);
-        if (model.isGameOver()){
+        if (model.isGameOver()) {
             Logger.info("Game Over! " + getPlayerName(model.getNextPlayer()) + " wins!");
             handleGameOver();
         }
@@ -89,22 +104,50 @@ public class GameController {
     @FXML
     private void handleGameOver() {
         Logger.debug("Game is Won!");
-        Platform.runLater(this::showGameOverAlertAndExit);
+        addResult();
+        Platform.runLater(() -> {
+            try {
+                SwitchToLeaderboard();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
-    private void showGameOverAlertAndExit() {
+    private void SwitchToLeaderboard() throws IOException {
         var alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over!");
         alert.setHeaderText(getPlayerName(model.getNextPlayer()) + " wins!");
-        alert.setContentText("Better luck next time!");
+        alert.setContentText("Check the Leaderboards!");
         alert.showAndWait();
-        Platform.exit();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/leaderboard.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = (Stage) board.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
-    private String getPlayerName(State.Player player){
+    private String getPlayerName(State.Player player) {
         if (players.player2().isEmpty() || players.player1().isEmpty()) {
             return player.toString();
         }
         return player == State.Player.PLAYER_1 ? players.player1() : players.player2();
+    }
+
+    private void addResult() {
+        var result = TwoPlayerGameResult.builder()
+                .player1Name(players.player1())
+                .player2Name(players.player2())
+                .numberOfTurns(model.numberOfTurnsProperty().get())
+                .status(model.getStatus())
+                .duration(Duration.between(timeCreated, ZonedDateTime.now()))
+                .created(timeCreated)
+                .build();
+        TwoPlayerGameResultManager manager = new JsonTwoPlayerGameResultManager(Path.of("database.json"));
+        try {
+            manager.add(result);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

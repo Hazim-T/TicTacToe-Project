@@ -46,11 +46,11 @@ public class GameModel implements BasicState<Move> {
         return board[i][j].getReadOnlyProperty();
     }
 
-    public int getNumberOfCoins() {
+    public int getNumberOfTurns() {
         return numberOfTurns.get();
     }
 
-    public ReadOnlyIntegerProperty numberOfCoinsProperty() {
+    public ReadOnlyIntegerProperty numberOfTurnsProperty() {
         return numberOfTurns.getReadOnlyProperty();
     }
 
@@ -90,7 +90,7 @@ public class GameModel implements BasicState<Move> {
                     }
             );
             numberOfTurns.set(numberOfTurns.get() + 1);
-            Logger.info("number of turns: " + getNumberOfCoins());
+            Logger.info("number of turns: " + getNumberOfTurns());
             if (!isGameOver()) {
                 currentPlayer = currentPlayer.opponent();
             }
