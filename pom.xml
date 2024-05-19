@@ -30,6 +30,12 @@
     <dependencies>
         <dependency>
             <groupId>hu.unideb.inf</groupId>
+            <artifactId>game-result-manager</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>hu.unideb.inf</groupId>
             <artifactId>homework-project-utils</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
@@ -184,6 +190,10 @@
         <repository>
             <id>github</id>
             <url>https://maven.pkg.github.com/INBPM0420L/homework-project-utils</url>
+        </repository>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/INBPM0420L/game-result-manager</url>
         </repository>
     </repositories>
 </project>
