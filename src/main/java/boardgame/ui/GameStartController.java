@@ -21,8 +21,8 @@ public class GameStartController {
 
     @FXML
     private void handleNextButton(ActionEvent event) throws IOException {
-        Logger.info("Player 1 name entered: {}", player1NameField.getText());
-        Logger.info("Player 2 name entered: {}", player2NameField.getText());
+        Logger.debug("Player 1 name entered: {}", player1NameField.getText());
+        Logger.debug("Player 2 name entered: {}", player2NameField.getText());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ui.fxml"));
         Parent root = fxmlLoader.load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

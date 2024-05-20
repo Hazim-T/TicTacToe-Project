@@ -103,18 +103,18 @@ public class GameController {
 
     @FXML
     private void handleGameOver() {
-        Logger.debug("Game is Won!");
-        addResult();
+        Logger.info("Game is Won!");
+        storeResult();
         Platform.runLater(() -> {
             try {
-                SwitchToLeaderboard();
+                alertAndSwitchToLeaderboard();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
     }
 
-    private void SwitchToLeaderboard() throws IOException {
+    private void alertAndSwitchToLeaderboard() throws IOException {
         var alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over!");
         alert.setHeaderText(getPlayerName(model.getNextPlayer()) + " wins!");
@@ -134,7 +134,7 @@ public class GameController {
         return player == State.Player.PLAYER_1 ? players.player1() : players.player2();
     }
 
-    private void addResult() {
+    private void storeResult() {
         var result = TwoPlayerGameResult.builder()
                 .player1Name(players.player1())
                 .player2Name(players.player2())
@@ -149,5 +149,6 @@ public class GameController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        Logger.debug("Result stored successfully", result);
     }
 }

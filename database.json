@@ -5,4 +5,25 @@
   "player2Name" : "ZZZ",
   "status" : "PLAYER_2_WINS",
   "numberOfTurns" : 3
-}]
+}, {
+  "duration" : 4.053015000,
+  "created" : "2024-05-19T20:05:43.3310811Z",
+  "player1Name" : "Khaled",
+  "player2Name" : "Yaseen",
+  "status" : "PLAYER_2_WINS",
+  "numberOfTurns" : 3
+}, {
+  "duration" : 9.283920300,
+  "created" : "2024-05-19T20:06:05.9741596Z",
+  "player1Name" : "Khaled",
+  "player2Name" : "Yaseen",
+  "status" : "PLAYER_2_WINS",
+  "numberOfTurns" : 3
+}, {
+  "duration" : 3.438456000,
+  "created" : "2024-05-20T21:29:06.4453318+02:00",
+  "player1Name" : "Hazim",
+  "player2Name" : "Alaa",
+  "status" : "PLAYER_2_WINS",
+  "numberOfTurns" : 3
+} ]

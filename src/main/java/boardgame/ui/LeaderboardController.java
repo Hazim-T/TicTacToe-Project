@@ -3,7 +3,6 @@ package boardgame.ui;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import gameresult.TwoPlayerGameResult;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import gameresult.manager.TwoPlayerGameResultManager;
 import gameresult.manager.json.JsonTwoPlayerGameResultManager;
+import org.tinylog.Logger;
 
 public class LeaderboardController {
     @FXML
@@ -34,5 +34,6 @@ public class LeaderboardController {
         ObservableList<TwoPlayerGameResultManager.Wins> observableList = FXCollections.observableArrayList();
         observableList.addAll(new JsonTwoPlayerGameResultManager(Path.of("database.json")).getPlayersWithMostWins(NUMBER_OF_ROWS_TO_SHOW));
         tableView.setItems(observableList);
+        Logger.info("Leaderboard fetched and displayed");
     }
 }

@@ -109,7 +109,7 @@ public class GameModel implements BasicState<Move> {
      * {@return whether the game is over}
      */
     @Override
-    public boolean isGameOver() { //TODO: make this into methods
+    public boolean isGameOver() {
         // Check rows
         for (int i = 0; i < BOARD_SIZE; i++) {
             if (board[i][0].get() != Rock.NONE && board[i][0].get() == board[i][1].get() && board[i][1].get() == board[i][2].get()) {
