@@ -192,7 +192,7 @@
             <url>https://maven.pkg.github.com/INBPM0420L/homework-project-utils</url>
         </repository>
         <repository>
-            <id>github</id>
+            <id>Github</id>
             <url>https://maven.pkg.github.com/INBPM0420L/game-result-manager</url>
         </repository>
     </repositories>
