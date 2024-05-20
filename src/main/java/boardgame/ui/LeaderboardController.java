@@ -16,7 +16,7 @@ import org.tinylog.Logger;
 
 public class LeaderboardController {
     @FXML
-    private static final int NUMBER_OF_ROWS_TO_SHOW = 15;
+    private static final int NUMBER_OF_ROWS_TO_SHOW = 5;
 
     @FXML
     private TableView<TwoPlayerGameResultManager.Wins> tableView;
