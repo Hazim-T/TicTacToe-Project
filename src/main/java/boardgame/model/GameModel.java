@@ -5,6 +5,7 @@ import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import lombok.Getter;
 import org.tinylog.Logger;
 
 
@@ -12,6 +13,7 @@ public class GameModel implements BasicState<Move> {
 
     private Player currentPlayer;
 
+    @Getter
     private final ReadOnlyIntegerWrapper numberOfTurns;
 
     /**
@@ -44,10 +46,6 @@ public class GameModel implements BasicState<Move> {
      */
     public ReadOnlyObjectProperty<Rock> rockProperty(int i, int j) {
         return board[i][j].getReadOnlyProperty();
-    }
-
-    public int getNumberOfTurns() {
-        return numberOfTurns.get();
     }
 
     public ReadOnlyIntegerProperty numberOfTurnsProperty() {
