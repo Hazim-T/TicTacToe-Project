@@ -13,7 +13,6 @@ public class GameModel implements BasicState<Move> {
 
     private Player currentPlayer;
 
-    @Getter
     private final ReadOnlyIntegerWrapper numberOfTurns;
 
     /**
@@ -33,10 +32,10 @@ public class GameModel implements BasicState<Move> {
                 board[i][j] = new ReadOnlyObjectWrapper<Rock>(Rock.NONE);
             }
         }
-        Logger.info("Game board initialized");
+        Logger.debug("Game board initialized");
         numberOfTurns = new ReadOnlyIntegerWrapper(0);
         currentPlayer = Player.PLAYER_1;
-        Logger.info("Current player initialized to " + getNextPlayer());
+        Logger.debug("Current player initialized to " + getNextPlayer());
     }
 
     /**
@@ -50,6 +49,10 @@ public class GameModel implements BasicState<Move> {
 
     public ReadOnlyIntegerProperty numberOfTurnsProperty() {
         return numberOfTurns.getReadOnlyProperty();
+    }
+
+    public int getNumberOfTurns(){
+        return numberOfTurns.get();
     }
 
     /**
@@ -140,7 +143,7 @@ public class GameModel implements BasicState<Move> {
         if (!isGameOver()) {
             return Status.IN_PROGRESS;
         }
-        return currentPlayer == Player.PLAYER_2 ? Status.PLAYER_1_WINS : Status.PLAYER_2_WINS;
+        return currentPlayer == Player.PLAYER_1 ? Status.PLAYER_1_WINS : Status.PLAYER_2_WINS;
     }
 
     @Override
