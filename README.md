@@ -1,6 +1,6 @@
 ``[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/f0r53tPY)
 # TIC TAC TOE game project
-Tic Tac Toe game made to run on console and with Javafx GUI 
+Tic Tac Toe game with a UI using JavaFX and made to run on the terminal.
 
 ## Table of Contents
 
@@ -10,7 +10,7 @@ Tic Tac Toe game made to run on console and with Javafx GUI
 
 ## Description
 
-Welcome to the Tic Tac Toe Game! This game is designed for two players and features an exciting twist with colored stones. Here are the rules and features of the game:
+This Tic-Tac-Toe game is played by two players and contains a twist in rules. Here are the rules and features of the game:
 
 ### Game Rules
 
@@ -39,9 +39,9 @@ To install the project:
 
 ## Terminal Usage
 
-To run the game on the terminal, run this command:
+To run the game on the terminal, run this command on a separate terminal:
 
-- `mvn compile exec:java -Dexec.mainClass="boardgame.ConsoleGame" `
+- `mvn compile exec:java -Dexec.mainClass="boardgame.model.ConsoleGame" `
 
 Example game:
 <pre>

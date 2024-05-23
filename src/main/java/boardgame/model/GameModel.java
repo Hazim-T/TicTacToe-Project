@@ -5,10 +5,12 @@ import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import lombok.Getter;
 import org.tinylog.Logger;
 
-
+/**
+ * Represents the model state for the game.
+ * It contains the game state and provides methods to update the game state.
+ */
 public class GameModel implements BasicState<Move> {
 
     private Player currentPlayer;
@@ -47,6 +49,9 @@ public class GameModel implements BasicState<Move> {
         return board[i][j].getReadOnlyProperty();
     }
 
+    /**
+     * @return {code ReadOnlyObjectProperty} of the number of turns played
+     */
     public ReadOnlyIntegerProperty numberOfTurnsProperty() {
         return numberOfTurns.getReadOnlyProperty();
     }

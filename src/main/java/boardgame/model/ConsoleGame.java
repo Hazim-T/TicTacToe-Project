@@ -1,7 +1,5 @@
-package boardgame;
+package boardgame.model;
 
-import boardgame.model.GameModel;
-import boardgame.model.Move;
 import game.console.BasicGame;
 
 import java.util.Scanner;

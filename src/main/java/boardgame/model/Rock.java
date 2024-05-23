@@ -5,8 +5,20 @@ package boardgame.model;
  * The Rock enum defines the rock types available.
  */
 public enum Rock {
+    /**
+     * Represents empty square space.
+     */
     NONE,
+    /**
+     * Represents a red rock.
+     */
     RED,
+    /**
+     * Represents a yellow rock.
+     */
     YELLOW,
+    /**
+     * Represents a green rock.
+     */
     GREEN
 }

@@ -12,7 +12,7 @@ public class GameApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/start.fxml"));
-        Logger.debug("Start UI loaded");
+        Logger.debug("Start UI loaded successfully");
         stage.setTitle("Rocky Tic-Tac-Toe");
         Scene scene = new Scene(root);
         stage.setScene(scene);

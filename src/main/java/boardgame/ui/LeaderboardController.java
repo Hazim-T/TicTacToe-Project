@@ -33,7 +33,8 @@ public class LeaderboardController {
         numberOfWins.setCellValueFactory(new PropertyValueFactory<>("numberOfWins"));
         ObservableList<TwoPlayerGameResultManager.Wins> observableList = FXCollections.observableArrayList();
         observableList.addAll(new JsonTwoPlayerGameResultManager(Path.of("database.json")).getPlayersWithMostWins(NUMBER_OF_ROWS_TO_SHOW));
+        Logger.debug("Results fetched from database");
         tableView.setItems(observableList);
-        Logger.info("Leaderboard fetched and displayed");
+        Logger.info("Leaderboard displayed with results");
     }
 }

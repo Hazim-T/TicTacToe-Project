@@ -58,8 +58,8 @@ public class GameController {
             numberOfTurnsField.textProperty().bind(model.numberOfTurnsProperty().asString());
             Stage stage = (Stage) board.getScene().getWindow();
             players = (Players) stage.getUserData();
-            Logger.info("Player 1 name passed: {}", players.player1());
-            Logger.info("Player 2 name passed: {}", players.player2());
+            Logger.debug("Player 1 name received: {}", players.player1());
+            Logger.debug("Player 2 name received: {}", players.player2());
             timeCreated = ZonedDateTime.now();
         });
     }
@@ -96,20 +96,19 @@ public class GameController {
         var nextMove = new Move(row, col);
         model.makeMove(nextMove);
         if (model.isGameOver()) {
-            Logger.info("Game Over! " + getPlayerName(model.getNextPlayer()) + " wins!");
             handleGameOver();
         }
     }
 
     @FXML
     private void handleGameOver() {
-        Logger.info("Game is Won!");
+        Logger.info("Game Over! " + getPlayerName(model.getNextPlayer()) + " wins!");
         storeResult();
         Platform.runLater(() -> {
             try {
                 alertAndSwitchToLeaderboard();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Logger.error(new RuntimeException(), "Could not switch to leaderboard");
             }
         });
     }
@@ -121,6 +120,7 @@ public class GameController {
         alert.setContentText("Check the Leaderboards!");
         alert.showAndWait();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/leaderboard.fxml"));
+        Logger.debug("Leaderboard UI loaded successfully");
         Parent root = fxmlLoader.load();
         Stage stage = (Stage) board.getScene().getWindow();
         stage.setScene(new Scene(root));
@@ -147,8 +147,8 @@ public class GameController {
         try {
             manager.add(result);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Logger.error(new RuntimeException(), "Could not add result to database");
         }
-        Logger.debug("Result stored successfully", result);
+        Logger.info("Result stored successfully");
     }
 }

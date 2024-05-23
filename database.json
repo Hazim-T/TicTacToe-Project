@@ -21,7 +21,7 @@
   "numberOfTurns" : 3
 }, {
   "duration" : 3.438456000,
-  "created" : "2024-05-20T21:29:06.4453318+02:00",
+  "created" : "2024-05-20T19:29:06.4453318Z",
   "player1Name" : "Hazim",
   "player2Name" : "Alaa",
   "status" : "PLAYER_2_WINS",
