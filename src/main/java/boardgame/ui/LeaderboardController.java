@@ -3,15 +3,19 @@ package boardgame.ui;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import gameresult.manager.TwoPlayerGameResultManager;
 import gameresult.manager.json.JsonTwoPlayerGameResultManager;
+import javafx.stage.Stage;
 import org.tinylog.Logger;
 
 public class LeaderboardController {
@@ -36,5 +40,24 @@ public class LeaderboardController {
         Logger.debug("Results fetched from database");
         tableView.setItems(observableList);
         Logger.info("Leaderboard displayed with results");
+    }
+
+    @FXML
+    private void onNewGame(ActionEvent event) {
+        ((Node) (event.getSource())).getScene().getWindow().hide();
+
+        Platform.runLater(() -> {
+            try {
+                new GameApplication().start(new Stage());
+            } catch (Exception e) {
+                Logger.error("Error loading opening screen", e);
+            }
+        });
+    }
+
+    @FXML
+    private void onExitButton() {
+        Logger.info("Closing application");
+        Platform.exit();
     }
 }

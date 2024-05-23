@@ -108,7 +108,7 @@ public class GameController {
             try {
                 alertAndSwitchToLeaderboard();
             } catch (IOException e) {
-                Logger.error(new RuntimeException(), "Could not switch to leaderboard");
+                Logger.error("Could not switch to leaderboard", e);
             }
         });
     }
@@ -147,7 +147,7 @@ public class GameController {
         try {
             manager.add(result);
         } catch (IOException e) {
-            Logger.error(new RuntimeException(), "Could not add result to database");
+            Logger.error("Could not add result to database", e);
         }
         Logger.info("Result stored successfully");
     }

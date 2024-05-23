@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-           prefHeight="400.0" prefWidth="600.0" stylesheets="@/table.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
-           xmlns:fx="http://javafx.com/fxml/1" fx:controller="boardgame.ui.LeaderboardController">
-    <children>
-        <TableView fx:id="tableView">
-            <columns>
-                <TableColumn fx:id="playerName" prefWidth="75.0" text="Name" />
-                <TableColumn fx:id="numberOfWins" prefWidth="75.0" text="Number of wins" />
-            </columns>
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-            </columnResizePolicy>
-        </TableView>
-    </children>
-</StackPane>
+<VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boardgame.ui.LeaderboardController">
+   <children>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@/table.css">
+          <children>
+              <TableView fx:id="tableView">
+                  <columns>
+                      <TableColumn fx:id="playerName" prefWidth="75.0" text="Name" />
+                      <TableColumn fx:id="numberOfWins" prefWidth="75.0" text="Number of wins" />
+                  </columns>
+                  <columnResizePolicy>
+                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                  </columnResizePolicy>
+              </TableView>
+          </children>
+      </StackPane>
+      <HBox alignment="CENTER" prefHeight="70.0" spacing="70.0">
+         <children>
+            <Button fx:id="newGameButton" mnemonicParsing="false" onAction="#onNewGame" prefWidth="100.0" text="New Game" />
+            <Button fx:id="ExitButton" mnemonicParsing="false" onAction="#onExitButton" prefWidth="100.0" text="Exit" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
